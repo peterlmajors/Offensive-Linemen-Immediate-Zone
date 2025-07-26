@@ -54,14 +54,11 @@ Authors: Peter Majors, Chris Orlando, Etienne Busnel
 - <font size = "4">**How well can the blocker maintain similar shoulder orientation to the rusher?**  
   - Diff in rusher and blocker shoulder orientation at beginning and end of OLIZ
 
-- <font size = "4">****How well can the blocker slow the rusher as they're leaving the immediate zone?**  
+- <font size = "4">**How well can the blocker slow the rusher as they're leaving the immediate zone?**  
   - Speed of the rusher leaving the OLIZ
 
-- <font size = "4">****If the blocker loses control of the pass rusher, how well can they recover?**  
+- <font size = "4">**If the blocker loses control of the pass rusher, how well can they recover?**  
   - Rusher time spent in OLIZ after leaving for the first time
-  
-<font size="4">If the Blocker Loses Control of the Pass Rusher, How Well Can They Recover?
-  - Total rusher time spent in the OLIZ after leaving it for the first time
 
 <font size="5" color="maroon">Modeling
 
