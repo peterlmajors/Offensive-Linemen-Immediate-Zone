@@ -33,11 +33,11 @@ Authors: Peter Majors, Chris Orlando, Etienne Busnel
 
 ![OLIZ_demonstration_hd](https://user-images.githubusercontent.com/73561125/212230097-a70bd37b-0645-4469-88ca-b5bcdb193069.png)
 
-<font size = "4"> OLIZ evaluates only the first rusher each pass blocker was assigned to on a given play, as the dataset records only the initial block made by each player and does not account for double teams. Using OLIZ, we calculated metrics to assess how effectively an offensive lineman keeps a single pass rusher away from the quarterback.
-    
-<font size = "4"> In designing these questions, our aim was to isolate the one-on-one interactions between blockers and rushers. Rather than predicting how close a rusher would ultimately get to the quarterback, we focused on measuring how much an offensive lineman influences that outcome under typical conditions. Each question reflects a single feature used in our model.
+<font size = "4"> OLIZ focuses on the first rusher assigned to each pass blocker in a play, based on data that only tracks the initial block performed by each player. It does not capture double teams or their effects. Using OLIZ, we developed spatio-temporal metrics to assess how well an offensive lineman contains a single pass rusher.
 
-**<font size = "5" color = 'maroon'> Questions Considered and Associated Model Features**
+<font size = "4"> In creating the following questions and features, we aimed to isolate one-on-one matchups between blockers and rushers. Rather than predicting the rusher’s final distance from the quarterback, we concentrated on quantifying the offensive lineman’s individual influence in typical pass protection situations.
+
+<font size = "5" color = 'maroon'> Questions Considered and Associated Features
 
 - <font size = "4">**How well can the blocker hold their ground?**  
   - Rusher distance from QB at beginning and end of being in OLIZ
@@ -65,38 +65,36 @@ Authors: Peter Majors, Chris Orlando, Etienne Busnel
 
 <font size="5" color="maroon">Modeling
 
-To evaluate offensive linemen in one-on-one scenarios, we trained two separate models: one for interior linemen (guards and centers), and another for tackles. We used Extreme Gradient Boosted (XGBoost) Regression, a robust ensemble method well-suited for capturing non-linear interactions and feature importance, to predict the distance between the rusher and the quarterback at the end of the play.
-
-Each model was trained using the features listed above, with each one designed to reflect a specific question about pass-blocking performance. By isolating these components, we aimed to quantify how individual blockers contribute to limiting rusher proximity to the quarterback under standard, non-double-team conditions.
+We trained two separate models: one for interior linemen (guards and centers), and another for tackles. We used Extreme Gradient Boosted (XGBoost) Regression, a robust ensemble method well-suited for capturing non-linear interactions and feature importance, to predict the distance between the rusher and the quarterback at the end of the play. We used StandardScalar() to account for differences in magnitude and K-Fold Cross Validation to tune hyperparameters - paying special attention to overfitting.
 
 ![feature_importance](https://user-images.githubusercontent.com/73561125/212230425-882a0527-559a-4d28-ab3c-7be56acc735c.png)
 
 <font size = "4"> As you can see, interior and exterior offensive linemen respond quite differently to the selected features. 
     
-<font size="4"> For guards and centers, the most influential feature was the change in rusher distance from the quarterback between the start and end of their time in the OLIZ. This aligns with expectations—interior linemen often face immediate pressure, so their ability to hold ground is critical in pass protection. We also found that the duration a rusher remained in the OLIZ played a significantly larger role for guards and centers than it did for tackles, further emphasizing the importance of sustained engagement in the interior.
+<font size="4"> For guards and centers, the most influential feature was the change in rusher distance from the quarterback between the start and end of their time in the OLIZ. This aligns with expectations—interior linemen often face immediate pressure, so their ability to hold ground is critical in pass protection. We also found that the duration a rusher remained in the OLIZ played a significantly larger role for guards and centers than it did for tackles, further emphasizing the importance of sustained engagement in the interior. On the test set for guards and centers, the model achieved a <b> RMSE of 1.27 yards </b> and a <b> Pearson correlation of 0.72 </b>. This indicates that approximately 52% of the variation in a rusher’s final distance from the quarterback can be explained by their initial interaction with the interior offensive lineman.
 
-<font size="4"> On the test set for guards and centers, the model achieved a Root Mean Squared Error (RMSE) of 1.27 yards and a Pearson correlation coefficient of 0.72. This indicates that approximately 52% of the variation in a rusher’s final distance from the quarterback can be explained by their initial interaction with the interior offensive lineman.
-
-<font size = "4"> Looking at the feature importances for tackles, we see that rusher distance from the start to the end of the immediate zone is similarly important. However, we noticed that time the blocker kept himself between the quarterback and the rusher, as well as rusher time in the immediate zone after initially leaving were more important metrics for tackle success. It is no wonder staying in front of your man and resecuring coverage is important for pass blocking, but now we have the model to back those up. Against the test set for tackles, our model achieved a far more promising <b> RMSE of 1.13 (Yards) </b> with a <b> Pearson R Correlation of .81 </b>.
+<font size="4"> For tackles, the most important feature remains the change in rusher distance from the start to the end of the immediate zone. However, two additional factors stand out: the amount of time the blocker stays positioned between the quarterback and the rusher, and the time the rusher spends back in the immediate zone after initially leaving it. These metrics highlight the critical importance of maintaining positioning and regaining control during pass blocking—a finding now supported by our model. On the test set for tackles, the model performed strongly, achieving an <b> RMSE of 1.13 yards </b> and a <b> Pearson correlation of 0.81 </b>, indicating a high level of accuracy in predicting rusher distance outcomes.
 
 **<font size = "5" color = 'maroon'> Evaluation**
 
-<font size = "4"> On a team-by-by team basis, we see very promising results when comparing actual and predicted rusher yards from quarterback at the final moment the play. Below, the guards/center and tackle scatterplots show a  <b> .62 </b> and <b> .71 Pearson R </b> correlation, respectively. Here, it is better for a team to be towards the top-right, since that means their offensive linemen prevented rushers from being closer to the QB.
+<font size = "4"> On a team-by-by team basis, we see very promising results when comparing actual and predicted rusher yards from quarterback at the final moment the play. This may Below, the guards/center and tackle scatterplots show a <b> .62 </b> and <b> .71 Pearson R </b> correlation, respectively. Being towards the top-right is better, since that means their offensive linemen prevented rushers from being closer to the QB.
     
-<font size = "4"> Note: The below graphs only include predictions on Weeks 5-8 of the data, as no predictions were made on weeks 1-4 to prevent model leakage.
+<font size = "4"> Note: The below graphs only include predictions on Weeks 5-8 of the data from the 2021 NFL season.
 
 ![dist_qb_pred_teams](https://user-images.githubusercontent.com/73561125/212230519-229ccdda-4f60-40d8-a97d-016eeb5542d6.png)
 
-<font size = "4"> Below we see the top 10 guards, rushers, and tackles at keeping rushers away from their quarterabcks in Weeks 5-8 of the 2021 NFL season, as predicted by their performance in Weeks 1-4. As you can see, these don't line up as the "best" offensive linemen at their positions, but that wasn't entirely our goal. 
+<font size = "4"> Below we see the top 10 guards, rushers, and tackles at keeping rushers away from their quarterabcks in Weeks 5-8 of the 2021 NFL season, as predicted by their performance in Weeks 1-4. As you can see, these aren't the consensus "best" offensive linemen in their position groups - they are simply the ones we projected to provide the QB space at the time of release.
 
 ![dist_qb_allowed_players](https://user-images.githubusercontent.com/73561125/212230600-e7c6add5-31dd-4bd6-85e6-cfdb112743b8.png)
 
-<font size = '4'> Our goal was to determine the impact of using OLIZ - or a similar tool - to determine distance from the quarterback, and subsequently sacks and hurries. Despite the predictive power of the OLIZ model for tackles and hurries on the test set as a whole, individual player statistics paint a slightly weaker picture. In a four week sample, statistics and matchups can be volatile - but our model still performs noticeably better than existing metrics. If run with more data, we are confident the rankings for the above pass blockers would change dramatically.
+<font size = '4'> Despite the predictive power of model - in a four week sample, statistics and matchups can be volatile. As for considerations about varying rusher talent levels, we attempted to capture the 'talent' of these rushers within each play by using our spatio-temporal features. There are also considerations about QB elusiveness. As mentioned above, we intentionally limited our sample to plays where QBs stayed in the pocket - but controlling for this variable, especially as team change QBs would have improved model reliability.
+
+<font size = '4'> Below, we observe that our model performs noticeably better than predicting distance from the QB with sacks, hurries, or the target variable itself from Weeks 1-4 of the season - showing promise for future applications.
 
 ![dist_qb_other_metrics](https://user-images.githubusercontent.com/73561125/212230624-fcc1ca5a-45a9-4755-8277-e431bc4b5ec0.png)
 
 **<font size = "5" color = 'maroon'> Conclusion**
 
-<font size = '4'> In order to make this analysis feasible, we had to eliminate many of the factors that make play on the offensive line so difficult to quantify, including scrambles and comlex schemes. This is one of the unfortunate realities of working with o-line data - and football data as a whole. Some areas of improvement for our model include optimizing the shape of the OLIZ, dynamically sizing the OLIZ based other teammates' zones, detecting/accounting for double teams, and as mentioned, appropriately accounting for different types for non-traditional play types.
-    
-<font size = '4'> By leveraging strictly player tracking data, we were able to produce a more accurate predictor of distance from the quarterback yielded by their pass blockers. We've discovered that for interior o-linemen, roughly half of the deviation in this figure can be explained by our work, while for tackles, two-thirds can be explained. Our hope is that we've contributed, at least in some small way, to furthering the understanding of desirable skillsets at these positions.
+<font size = '4'> In order to make this analysis feasible, we had to eliminate many of the factors that make play on the offensive line so difficult to quantify, including scrambles and comlex schemes. This is one of the unfortunate realities of working with o-line data - and football data as a whole. Some areas of improvement for our model include optimizing the shape of the OLIZ, dynamically sizing the OLIZ based other teammates' zones, detecting/accounting for double teams, controlling for QB elusiveness in the pocket, and expanding our feature set to measure more about the oncoming pass rusher.
+
+<font size = '4'> By relying solely on player tracking data, we developed a model that more accurately predicts the distance a rusher is kept from the quarterback—an objective, data-driven measure of pass protection effectiveness. For interior offensive linemen, our model explains approximately half of the variation in this outcome. For tackles, that figure rises to two-thirds, underscoring the model’s strong performance in capturing the nuances of edge protection. We hope this project contributes, even in a small way, to the broader effort of advancing offensive line evaluation—shedding light on the specific, measurable actions that distinguish high-performing linemen and pushing the field toward smarter, more transparent player assessment.
