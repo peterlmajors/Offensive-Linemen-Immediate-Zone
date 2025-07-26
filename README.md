@@ -1,14 +1,14 @@
 # Evaluating Offensive Linemen Using OLIZ: Offensive Linemen Immediate Zone
 
-Note: If attempting to run the code yourself, you will need data from the NFL's 2023 Big Data Bowl. If you have access to these files, the correct order to run the .ipynb files on your machine is as follows: Data_Preparation, Feature_Creation, Model_Creation. These will take you through all of the steps to this project. Exploratory_Analysis was used to brainstorm calculations, learn about the data, and build new features.
+Note: If attempting to run the code yourself, you will need data from the NFL's 2023 Big Data Bowl. If you have access to these files, the correct order to run the .ipynb files on your machine is as follows: Data_Preparation, Feature_Creation, Model_Creation. These will take you through all of the steps to this project. Exploratory_Analysis was used to brainstorm calculations and build features.
 
 Authors: Peter Majors, Chris Orlando, Etienne Busnel
 
 **<font size = "5" color = 'maroon'>Introduction**
 
-<font size = "4"> When a quarterback drops back in the pocket on a passing play, what is the role of the offensive lineman? Generally, it is to keep the pass rusher as far from the quarterback as possible. Doing so, he gives the quarterback enough time, physical space, and peace of mind to complete a pass to an eligible receiver.
+<font size = "4"> When a quarterback drops back in the pocket, what is the role of the offensive lineman? Generally, it is to keep the pass rusher as far from the quarterback as possible. Doing so, he gives the quarterback enough time, physical space, and peace of mind to complete a pass to his receiver.
 
-<font size = "4"> Below we see a series of combinations between distances of various numbers of pass rushers from a quarterback on the final frame he is deemed to have possession of the football, along with the associated Expected Points Added (EPA) of the play. We see that as the distance decreases and and the number of rushers within that distance increases, offensive performance declines.
+<font size = "4"> Below we see a series of combinations between distances of various numbers of pass rushers from a quarterback on the final frame he has possession of the football, along with the associated Expected Points Added (EPA) of the play. We see that as the distance decreases and and the number of rushers within that distance increases, offensive performance declines.
 
 ![image](https://user-images.githubusercontent.com/73561125/212229770-f89c2b8c-321f-4796-af13-6c6aed9d9aa6.png)
 
