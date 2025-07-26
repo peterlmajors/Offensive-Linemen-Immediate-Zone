@@ -87,7 +87,7 @@ We trained two separate models: one for interior linemen (guards and centers), a
 
 ![dist_qb_allowed_players](https://user-images.githubusercontent.com/73561125/212230600-e7c6add5-31dd-4bd6-85e6-cfdb112743b8.png)
 
-<font size = '4'> Despite the predictive power of model - in a four week sample, statistics and matchups can be volatile. As for considerations about varying rusher talent levels, we attempted to capture the 'talent' of these rushers within each play by using our spatio-temporal features. There are also considerations about QB elusiveness. As mentioned above, we intentionally limited our sample to plays where QBs stayed in the pocket - but controlling for this variable, especially as team change QBs would have improved model reliability.
+<font size = '4'> Despite the predictive power of model - in a four week sample, statistics and matchups can be volatile. As for considerations about varying rusher talent levels, we attempted to capture the 'talent' of these rushers within each play by using our spatio-temporal features. There are also considerations about QB elusiveness. As mentioned above, we intentionally limited our sample to plays where QBs stayed in the pocket - but controlling for this variable would have certainly improved model reliability.
 
 <font size = '4'> Below, we observe that our model performs noticeably better than predicting distance from the QB with sacks, hurries, or the target variable itself from Weeks 1-4 of the season - showing promise for future applications.
 
